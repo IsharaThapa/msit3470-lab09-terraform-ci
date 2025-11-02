@@ -12,8 +12,10 @@ jobs:
     permissions:
       contents: read
       id-token: write
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -40,4 +42,3 @@ jobs:
         with:
           name: tf-plan-5711
           path: plan.txt
-
