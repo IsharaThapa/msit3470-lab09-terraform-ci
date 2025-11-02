@@ -12,6 +12,10 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    # Global env to keep Terraform quiet and offline
+    env:
+      TF_IN_AUTOMATION: "true"
+      AWS_EC2_METADATA_DISABLED: "true"
 
     steps:
       - name: Checkout code
@@ -25,16 +29,18 @@ jobs:
       - name: Terraform FMT (auto-fix)
         run: terraform fmt -recursive
 
-      - name: Terraform Init
-        run: terraform init -input=false
+      # Prevent any backend checks; we only need local plan in CI
+      - name: Terraform Init (no backend)
+        run: terraform init -input=false -backend=false
 
       - name: Terraform Validate
         run: terraform validate -no-color
 
-      - name: Terraform Plan
-        run: terraform plan -no-color -out=tfplan.bin
+      # The key: refresh OFF so provider won’t call AWS; stay fully offline
+      - name: Terraform Plan (offline)
+        run: terraform plan -no-color -input=false -refresh=false -out=tfplan.bin
 
-      - name: Terraform Show
+      - name: Terraform Show → plan.txt
         run: terraform show -no-color tfplan.bin | tee plan.txt
 
       - name: Upload Plan Artifact
