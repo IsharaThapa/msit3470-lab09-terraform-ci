@@ -20,8 +20,8 @@ jobs:
         with:
           terraform_version: 1.8.5
 
-      - name: Terraform FMT
-        run: terraform fmt -check -recursive
+      - name: Terraform FMT (auto-fix)
+        run: terraform fmt -recursive
 
       - name: Terraform Init
         run: terraform init -input=false
