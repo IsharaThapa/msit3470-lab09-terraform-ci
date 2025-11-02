@@ -10,7 +10,12 @@ terraform {
 
 provider "aws" {
   region                      = "us-east-1"
-  skip_credentials_validation = true
-  skip_metadata_api_check     = true
-  skip_requesting_account_id  = true
+
+  # Disable credential and metadata checks
+  skip_credentials_validation  = true
+  skip_requesting_account_id   = true
+  skip_metadata_api_check      = true
+  skip_region_validation       = true
+  access_key                   = "fake"
+  secret_key                   = "fake"
 }
