@@ -72,14 +72,15 @@ resource "aws_security_group" "web" {
   }
 }
 # resource "aws_instance" "web" {
-#   ami                    = data.aws_ami.amazon_linux.id
-#   key_name                = "lab-07"
-#   instance_type           = "t2.micro"
-#   subnet_id               = aws_subnet.public.id
-#   vpc_security_group_ids  = [aws_security_group.web.id]
-#   user_data               = file("${path.module}/user_data.sh")
+#   ami                   = local.is_ci ? "ami-placeholder" : data.aws_ami.amazon_linux[0].id
+#   key_name              = "lab-07"
+#   instance_type         = "t2.micro"
+#   subnet_id             = aws_subnet.public.id
+#   vpc_security_group_ids = [aws_security_group.web.id]
+#   user_data             = file("${path.module}/user_data.sh")
 #   tags = {
 #     Name = "${var.name_prefix}-web"
 #   }
 # }
+
 
